@@ -27,10 +27,11 @@ namespace Developer_Portfolio_Dashboard
             }
 
             app.UseHttpsRedirection();
-            app.UseSession();
+           
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapStaticAssets();
             app.MapControllerRoute(
