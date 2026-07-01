@@ -1,3 +1,4 @@
+using Developer_Portfolio_Dashboard.Services;
 namespace Developer_Portfolio_Dashboard
 {
     public class Program
@@ -15,6 +16,12 @@ namespace Developer_Portfolio_Dashboard
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            builder.Services.AddHttpClient("GitHub", client =>
+            {
+                client.BaseAddress = new Uri("https://api.github.com/");
+                client.DefaultRequestHeaders.Add("User-Agent", "DeveloperPortfolioDashboard");
+            });
+            builder.Services.AddScoped<GitHubService>();
 
             var app = builder.Build();
 
@@ -29,9 +36,9 @@ namespace Developer_Portfolio_Dashboard
             app.UseHttpsRedirection();
            
             app.UseRouting();
-
-            app.UseAuthorization();
             app.UseSession();
+            app.UseAuthorization();
+            
 
             app.MapStaticAssets();
             app.MapControllerRoute(
