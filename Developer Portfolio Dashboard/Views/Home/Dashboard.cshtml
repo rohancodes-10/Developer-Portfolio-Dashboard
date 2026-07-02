@@ -1,1 +1,108 @@
-﻿
+﻿@using Developer_Portfolio_Dashboard.Models
+@using Developer_Portfolio_Dashboard.ViewModels
+@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var languageColors = new Dictionary<string, string>
+    {
+        ["C#"] = "#178600",
+        ["JavaScript"] = "#f1e05a",
+        ["TypeScript"] = "#3178c6",
+        ["Python"] = "#3572A5",
+        ["HTML"] = "#e34c26",
+        ["CSS"] = "#563d7c",
+        ["Java"] = "#b07219",
+        ["PHP"] = "#4F5D95",
+        ["Go"] = "#00ADD8",
+        ["Rust"] = "#dea584"
+    };
+
+    string GetLangColor(string? lang) =>
+        lang != null && languageColors.ContainsKey(lang)
+            ? languageColors[lang] : "#858585";
+
+    var user = Model.user!;
+    var repos = Model.Repos;
+}
+
+<!-- NAV -->
+<nav class="dash-nav">
+    <span class="nav-brand">DevFolio</span>
+    <div class="nav-right">
+        <img src="@user.AvatarUrl" class="nav-avatar" alt="avatar" />
+        <span class="nav-username">@user.Login</span>
+        <a asp-action="Logout" asp-controller="Auth" class="btn-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="dash-body">
+
+    <!-- PROFILE CARD -->
+    <aside class="profile-card">
+        <img src="@user.AvatarUrl" class="profile-avatar" alt="@user.Login" />
+        <h2 class="profile-name">@(user.Name ?? user.Login)</h2>
+        <p class="profile-login">@@@user.Login</p>
+
+        @if (!string.IsNullOrEmpty(user.Bio))
+        {
+            <p class="profile-bio">@user.Bio</p>
+        }
+
+        <div class="profile-stats">
+            <div class="pstat">
+                <span class="pstat-value">@user.PublicRepos</span>
+                <span class="pstat-label">Repos</span>
+            </div>
+            <div class="pstat">
+                <span class="pstat-value">@user.Followers</span>
+                <span class="pstat-label">Followers</span>
+            </div>
+            <div class="pstat">
+                <span class="pstat-value">@user.Following</span>
+                <span class="pstat-label">Following</span>
+            </div>
+        </div>
+
+        <a href="https://github.com/@user.Login" target="_blank" class="btn-view-github">
+            View on GitHub
+        </a>
+    </aside>
+
+    <!-- REPOS -->
+    <main class="dash-main">
+        <h3 class="section-title">Recent Repositories</h3>
+        <div class="repo-grid">
+            @foreach (var repo in repos)
+            {
+                <a href="@repo.Url" target="_blank" class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-name">@repo.Name</span>
+                        <span class="repo-visibility @(repo.Visibility == "public" ? "vis-public" : "vis-private")">
+                            @repo.Visibility
+                        </span>
+                    </div>
+
+                    <p class="repo-desc">
+                        @(string.IsNullOrEmpty(repo.Description) ? "No description" : repo.Description)
+                    </p>
+
+                    <div class="repo-footer">
+                        @if (!string.IsNullOrEmpty(repo.Language))
+                        {
+                            <span class="repo-lang">
+                                <span class="lang-dot" style="background:@GetLangColor(repo.Language)"></span>
+                                @repo.Language
+                            </span>
+                        }
+                        <span class="repo-stat">⭐ @repo.Stars</span>
+                        <span class="repo-stat">🍴 @repo.Forks</span>
+                        <span class="repo-updated">Updated @repo.UpdatedAt.ToString("MMM dd, yyyy")</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </main>
+
+</div>

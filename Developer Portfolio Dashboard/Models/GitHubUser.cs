@@ -3,6 +3,8 @@ namespace Developer_Portfolio_Dashboard.Models
 {
     public class GitHubUser
     {
+        [JsonPropertyName("avatar_url")]
+        public string? AvatarUrl { get; set; }
         [JsonPropertyName("name")]
         public string? Name { get; set; }
 

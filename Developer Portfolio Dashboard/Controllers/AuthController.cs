@@ -21,6 +21,7 @@ namespace Developer_Portfolio_Dashboard.Controllers
             $"?client_id={ClientId}" +
             $"&redirect_uri={RedirectUri}" +
             $"&scope={scope}";
+
             return Redirect(url);
         }
         public async Task<IActionResult> Callback(string code)
@@ -54,7 +55,7 @@ namespace Developer_Portfolio_Dashboard.Controllers
                 return RedirectToAction("index", "home");
             }
             HttpContext.Session.SetString("github_token", result.AccessToken);
-            return RedirectToAction("index", "home");
+            return RedirectToAction("Dashboard", "home");
 
         }
         public IActionResult Logout()

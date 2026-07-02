@@ -16,10 +16,16 @@ namespace Developer_Portfolio_Dashboard.Models
         [JsonPropertyName("stargazers_count")]
         public int Stars { get; set; }
 
+        [JsonPropertyName("forks_count")]
+        public int Forks { get; set; }
+
         [JsonPropertyName("language")]
         public string? Language { get; set; }
 
         [JsonPropertyName("updated_at")]
-        public string? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        [JsonPropertyName("visibility")]
+        public string? Visibility { get; set; }
     }
 }

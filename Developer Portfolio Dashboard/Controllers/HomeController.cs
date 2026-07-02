@@ -13,8 +13,12 @@ namespace Developer_Portfolio_Dashboard.Controllers
         {
             _gitHubService = gitHubService;
         }
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Dashboard()
         {
             var token = HttpContext.Session.GetString("github_token");
             if (string.IsNullOrEmpty(token))
